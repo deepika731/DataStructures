@@ -6,7 +6,7 @@ struct ListNode
 	struct ListNode *next;
 };
 struct ListNode *head=NULL;
-void display()
+void display(struct ListNode *head)
 {
 	struct ListNode *current;
 	current = head;
@@ -107,116 +107,56 @@ void insertion()
 	}
 			
 }
-void deletion()
+struct ListNode *ReversePairRecursive(struct ListNode *head)
 {
-	struct ListNode *current,*previous;
-	if(head == NULL)
+	struct ListNode *temp;
+	if(head == NULL || head->next == NULL)
 	{
-		printf("there are no nodes to delete\n");
+		return head;
 	}
 	else
 	{
-		int ch,p,k=1;
-		printf("1.deletion at the head\n2.delete at the given position\n3.deletion at the end\nenter your choice:");
-		scanf("%d",&ch);
-		if(ch == 1)
-		{
-			head = head->next;
-		}
-		else if(ch==2)
-		{
-			printf("enter position:");
-			scanf("%d",&p);
-			if(p==1)
-			{
-				head = head->next;
-			}
-			else
-			{
-				current = head;
-				while(current->next !=NULL)
-				{
-					k++;
-					if(k==p)
-					{
-						break;
-					}
-					current = current->next;
-				}
-				current->next = current->next->next;
-			}
-			
-		}
-		else if(ch==3)
-		{
-			if(head->next == NULL)
-			{
-				head = NULL;
-			}
-			else
-			{
-				
-				current = head;
-				while(current->next->next!=NULL)
-				{
-					current = current->next;
-				}
-				current->next = NULL;
-			}
-		}
+		temp = head->next;
+		head->next = temp->next;
+		temp->next = head;
+		head = temp;
+		head->next->next = ReversePairRecursive(head->next->next);
+		return head;
 	}
-	
-		
 }
-void PrintListFromEnd(struct ListNode *head)
+struct ListNode *ReversePairIterative(struct ListNode *head)
 {
-	while(!head)
+	struct ListNode *temp1=NULL,*temp2=NULL,*current = head;
+	while(current!=NULL && current->next != NULL)
 	{
-		return;
-	}
-	PrintListFromEnd(head->next);
-	printf("%d->",head->data);
-}
-void DeleteDuplicates()
-{
-	struct ListNode *current = head;
-	while(current->next!=NULL)
-	{
-		if(current->data == current->next->data)
+		if(temp1!=NULL)
 		{
-			current->next = current->next->next;
+			temp1->next->next = current->next;
 		}
-		else
+		temp1 = current->next;
+		current->next = current->next->next;
+		temp1->next = current;
+		if(temp2 == NULL)
 		{
-			current = current->next;
+			temp2 = temp1;
 		}
+		current = current->next;
 	}
+	return temp2;
 }
 int main()
 {
-	display();
+	display(head);
 	insertion();
-	display();
+	display(head);
 	insertion();
-	display();
+	display(head);
 	insertion();
-	display();
+	display(head);
 	insertion();
-	display();
-	/*deletion();
-	display();
-	deletion();
-	display();
-	deletion();
-	display();
-	deletion();
-	display();
-	deletion();
-	display();*/
-	//PrintListFromEnd(head);
-	DeleteDuplicates();
-	display();
+	display(head);
+	head = ReversePairIterative(head);
+	display(head);
 	
-
 }
 

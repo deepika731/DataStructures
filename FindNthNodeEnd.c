@@ -168,29 +168,59 @@ void deletion()
 	
 		
 }
-void PrintListFromEnd(struct ListNode *head)
+void FindNthNodeEnd()
 {
-	while(!head)
+	int length=0,i;
+	struct ListNode *current;
+	current = head;
+	while(current!=NULL)
 	{
-		return;
+		length++;
+		current = current->next;
 	}
-	PrintListFromEnd(head->next);
-	printf("%d->",head->data);
-}
-void DeleteDuplicates()
-{
-	struct ListNode *current = head;
-	while(current->next!=NULL)
+	int n;
+	printf("enter position:\t");
+	scanf("%d",&n);
+	current = head;
+	i = 0;
+	if(n>length)
 	{
-		if(current->data == current->next->data)
+		printf("no such position exist\n");
+	}
+	else
+	{
+		while(current != NULL)
 		{
-			current->next = current->next->next;
-		}
-		else
-		{
+			i++;
+			if(i==length-n+1)
+			{
+				printf("the element in %d position from the end is %d\n",n,current->data);
+				break;
+			}
 			current = current->next;
 		}
 	}
+	
+}
+void FindNthNode()
+{
+	struct ListNode *ptemp,*pnthnode;
+	int n;
+	printf("enter postion:\t");
+	scanf("%d",&n);
+	ptemp = head;
+	pnthnode = head;
+	int i = 0;
+	while(ptemp!=NULL)
+	{
+		if(i>=n)
+		{
+			pnthnode = pnthnode->next;
+		}	
+		ptemp = ptemp->next;
+		i++;
+	}
+	printf("the node at position %d from the end is %d\n",n,pnthnode->data);
 }
 int main()
 {
@@ -213,10 +243,7 @@ int main()
 	display();
 	deletion();
 	display();*/
-	//PrintListFromEnd(head);
-	DeleteDuplicates();
-	display();
-	
+	FindNthNode();
 
 }
 

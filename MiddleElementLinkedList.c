@@ -107,66 +107,52 @@ void insertion()
 	}
 			
 }
-void deletion()
+struct ListNode* ReverseLinkedList(struct ListNode *head)
 {
-	struct ListNode *current,*previous;
-	if(head == NULL)
+	struct ListNode *temp = NULL,*nextNode = NULL;
+	while(head)
 	{
-		printf("there are no nodes to delete\n");
+		nextNode = head -> next;
+		head->next = temp;
+		temp = head;
+		head = nextNode;
 	}
-	else
+	return temp;
+}
+void MiddleElement()
+{
+	struct ListNode *slowptr,*fastptr,*temp1,*temp2,*temp;
+	int c = 0;
+	slowptr =  head;
+	fastptr = head;
+	while(fastptr->next!=NULL)
 	{
-		int ch,p,k=1;
-		printf("1.deletion at the head\n2.delete at the given position\n3.deletion at the end\nenter your choice:");
-		scanf("%d",&ch);
-		if(ch == 1)
-		{
-			head = head->next;
-		}
-		else if(ch==2)
-		{
-			printf("enter position:");
-			scanf("%d",&p);
-			if(p==1)
-			{
-				head = head->next;
-			}
-			else
-			{
-				current = head;
-				while(current->next !=NULL)
-				{
-					k++;
-					if(k==p)
-					{
-						break;
-					}
-					current = current->next;
-				}
-				current->next = current->next->next;
-			}
-			
-		}
-		else if(ch==3)
-		{
-			if(head->next == NULL)
-			{
-				head = NULL;
-			}
-			else
-			{
-				
-				current = head;
-				while(current->next->next!=NULL)
-				{
-					current = current->next;
-				}
-				current->next = NULL;
-			}
-		}
+		slowptr = slowptr->next;
+		c++;
+		fastptr = fastptr->next->next;
 	}
+	c = c+2;
+	printf("count - %d\n",c);
+	temp = slowptr->next;
+	slowptr->next = ReverseLinkedList(temp);
+	temp1 = head;
+	temp2 = slowptr->next;
 	
-		
+	while(temp2->next!=NULL)
+	{
+		struct ListNode *newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+		newNode->data = temp2->data;
+		newNode->next = temp1->next;
+		temp1->next = newNode;
+		temp1 = temp1->next->next;
+		temp2 = temp2->next;
+	}
+	struct ListNode *newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+	newNode->data = temp2->data;
+	newNode->next = temp1->next;
+	temp1->next = newNode;
+	slowptr->next = NULL;
+	display();	
 }
 void PrintListFromEnd(struct ListNode *head)
 {
@@ -176,21 +162,6 @@ void PrintListFromEnd(struct ListNode *head)
 	}
 	PrintListFromEnd(head->next);
 	printf("%d->",head->data);
-}
-void DeleteDuplicates()
-{
-	struct ListNode *current = head;
-	while(current->next!=NULL)
-	{
-		if(current->data == current->next->data)
-		{
-			current->next = current->next->next;
-		}
-		else
-		{
-			current = current->next;
-		}
-	}
 }
 int main()
 {
@@ -203,19 +174,17 @@ int main()
 	display();
 	insertion();
 	display();
-	/*deletion();
+	insertion();
 	display();
-	deletion();
+	insertion();
 	display();
-	deletion();
+	insertion();
 	display();
-	deletion();
+	insertion();
 	display();
-	deletion();
-	display();*/
-	//PrintListFromEnd(head);
-	DeleteDuplicates();
+	insertion();
 	display();
+	MiddleElement();
 	
 
 }

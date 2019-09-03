@@ -6,7 +6,7 @@ struct ListNode
 	struct ListNode *next;
 };
 struct ListNode *head=NULL;
-void display()
+void display(struct ListNode *head)
 {
 	struct ListNode *current;
 	current = head;
@@ -107,116 +107,76 @@ void insertion()
 	}
 			
 }
-void deletion()
+struct ListNode *GetKPlusOneThNode(int k,struct ListNode *head)
 {
-	struct ListNode *current,*previous;
-	if(head == NULL)
+	struct ListNode *Kth;
+	int i=0;
+	if(!head)
 	{
-		printf("there are no nodes to delete\n");
+		return head;
+	}
+	for(i=0,Kth = head;Kth && i<k;i++,Kth=Kth->next);
+	if(i==k && Kth!=NULL)
+	{
+		return Kth;
+	}
+	return head->next;
+}
+int HasKNodes(struct ListNode *head,int k)
+{
+	int i=0;
+	for(i=0;head && i<k;i++,head = head->next);
+	if(i==k)
+		return 1;
+	return 0;
+}
+struct ListNode *ReverseBlockOfKNodesInLinkedList(struct ListNode *head,int k)
+{
+	struct ListNode *current = head,*temp,*next,*newHead;
+	int i;
+	if(k==0 || k==1)
+	{
+		return head;
+	}
+	if(HasKNodes(current,k-1))
+	{
+		newHead = GetKPlusOneThNode(k-1,current);
 	}
 	else
 	{
-		int ch,p,k=1;
-		printf("1.deletion at the head\n2.delete at the given position\n3.deletion at the end\nenter your choice:");
-		scanf("%d",&ch);
-		if(ch == 1)
-		{
-			head = head->next;
-		}
-		else if(ch==2)
-		{
-			printf("enter position:");
-			scanf("%d",&p);
-			if(p==1)
-			{
-				head = head->next;
-			}
-			else
-			{
-				current = head;
-				while(current->next !=NULL)
-				{
-					k++;
-					if(k==p)
-					{
-						break;
-					}
-					current = current->next;
-				}
-				current->next = current->next->next;
-			}
-			
-		}
-		else if(ch==3)
-		{
-			if(head->next == NULL)
-			{
-				head = NULL;
-			}
-			else
-			{
-				
-				current = head;
-				while(current->next->next!=NULL)
-				{
-					current = current->next;
-				}
-				current->next = NULL;
-			}
-		}
+		newHead = head;
 	}
-	
-		
-}
-void PrintListFromEnd(struct ListNode *head)
-{
-	while(!head)
+	while(current && HasKNodes(current,k))
 	{
-		return;
-	}
-	PrintListFromEnd(head->next);
-	printf("%d->",head->data);
-}
-void DeleteDuplicates()
-{
-	struct ListNode *current = head;
-	while(current->next!=NULL)
-	{
-		if(current->data == current->next->data)
+		temp = GetKPlusOneThNode(k,current);
+		i = 0;
+		while(i<k)
 		{
-			current->next = current->next->next;
-		}
-		else
-		{
-			current = current->next;
+			next = current->next;
+			current->next = temp;
+			temp = current;
+			current = next;
+			i++;
 		}
 	}
+	return newHead;
 }
 int main()
 {
-	display();
+	display(head);
 	insertion();
-	display();
+	display(head);
 	insertion();
-	display();
+	display(head);
 	insertion();
-	display();
+	display(head);
 	insertion();
-	display();
-	/*deletion();
-	display();
-	deletion();
-	display();
-	deletion();
-	display();
-	deletion();
-	display();
-	deletion();
-	display();*/
-	//PrintListFromEnd(head);
-	DeleteDuplicates();
-	display();
-	
-
+	display(head);
+	insertion();
+	display(head);
+	insertion();
+	display(head);
+	head = ReverseBlockOfKNodesInLinkedList(head,3);
+	display(head);
 }
 
